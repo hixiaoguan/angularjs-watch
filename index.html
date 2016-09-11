@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <title>AngularJS $scope.$watch理解</title>
+    <script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.3.0/angular.js"></script>
+</head>
+<body ng-app="myApp">
+<div ng-controller='firstController'>
+    <input type="text" ng-model="name"/>
+    {{count}}{{name}}
+</div>
+<script type="text/javascript">
+    var app = angular.module("myApp",[]);
+    app.controller("firstController",["$scope",function($scope){
+     //啥时候用到$watch?
+     //需要手动监听某个变量是否边了，这种情况通常发生在我们用了非ng系列的方法，或是异步请求，平时建议少用。
+     //$watch充字面意义上看就是观察，监视的意思，那么它观察什么呢？
+     //其实angularjs无时无刻不在做着这件事件，但是我们只是没有看到它在执行
+     //比较我们的ng-model,ng-repeat等ng开通的angular为我们提供的这些指令，只要发生了变化都会引起$watch的工作，可以说，每发生一次数据变化就会触发$watch一次脏检查。那么$watch是如何工作的呢？$watch有规定好的参数，我们来通过实例看看
+     //$watch(watchFn,watchAction,deepWactch),注意第三个参数是个布尔值，当我们监听的是个对象或数组内的元素变动时使用
+
+
+     $scope.name = '小官';
+     $scope.count = 0;
+
+     $scope.$watch('name',function(newVal,oldVal){
+         ++$scope.count;
+         console.log(newVal,oldVal);
+         if($scope.count==100){
+             $scope.name='符合满100减20的条件了!';
+         }
+     });
+
+    }]);
+</script>
+</body>
+</html>
